@@ -8,34 +8,48 @@
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
     </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
     <script src="script.js" defer></script>
   </head>
+
   <body>
     <main>
+      <!-- ===================== -->
+      <!-- TOOLBAR (AÇÕES) -->
+      <!-- ===================== -->
+      <section class="toolbar">
+        <select name="categoria" id="categoria">
+          <option value="todas">todas as categorias</option>
+          <option value="bebes">bebês</option>
+          <option value="bebidas">bebidas</option>
+          <option value="carnes">carnes (açougue)</option>
+          <option value="congelados">congelados</option>
+          <option value="hortifruti">hortifruti (frescos)</option>
+          <option value="higiene">higiene pessoal</option>
+          <option value="laticinios">laticínios e frios</option>
+          <option value="limpeza">limpeza doméstica</option>
+          <option value="mercearia">mercearia seca</option>
+          <option value="padaria">padaria</option>
+          <option value="pets">pet shop</option>
+          <option value="snacks">snacks e doces</option>
+        </select>
+
+        <input type="text" id="search" placeholder="Pesquisar item..." />
+
+        <button id="btn-open-modal">Novo item</button>
+      </section>
+
+      <!-- ===================== -->
+      <!-- TABELA -->
+      <!-- ===================== -->
       <section>
         <table>
           <thead>
             <tr>
-              <th>
-                <select name="categoria" id="categoria">
-                  <option value="bebes">bebês</option>
-                  <option value="bebidas">bebidas</option>
-                  <option value="carnes">carnes (açougue)</option>
-                  <option value="congelados">congelados</option>
-                  <option value="hortifruti">hortifruti (frescos)</option>
-                  <option value="higiene">higiene pessoal</option>
-                  <option value="laticinios">laticínios e frios</option>
-                  <option value="limpeza">limpeza doméstica</option>
-                  <option value="mercearia">mercearia seca</option>
-                  <option value="padaria">padaria</option>
-                  <option value="pets">pet shop</option>
-                  <option value="snacks">snacks e doces</option>
-                </select>
-              </th>
-            </tr>
-            <tr>
               <th>incluir</th>
-              <!-- <th>id</th> -->
               <th>nome</th>
               <th>quantidade</th>
               <th>valor</th>
@@ -44,19 +58,49 @@
               <th>ações</th>
             </tr>
           </thead>
+
           <tbody id="tbody">
             <tr>
-                <td><input type="checkbox" name="" class="incluir" aria-label="incluir pão de forma"></td>
-                <td>Pão de forma</td>
-                <td>2</td>
-                <td>5</td>
-                <td>pacote</td>
-                <td>10</td>
-                <td>editar / excluir</td>
+              <td>
+                <input
+                  type="checkbox"
+                  class="incluir"
+                  aria-label="incluir pão de forma"
+                />
+              </td>
+
+              <td>Pão de forma</td>
+              <td>2</td>
+              <td>5</td>
+              <td>pacote</td>
+              <td>10</td>
+
+              <td>
+                <button>
+                  <span class="fa-solid fa-pen"></span>
+                </button>
+
+                <button>
+                  <span class="fa-solid fa-trash"></span>
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
       </section>
     </main>
+
+    <!-- ===================== -->
+    <!-- MODAL -->
+    <!-- ===================== -->
+    <div class="modal hidden" id="modal">
+      <div class="modal-content">
+        <h2>Adicionar item</h2>
+
+        <form id="form-item">
+          <!-- inputs futuros -->
+        </form>
+      </div>
+    </div>
   </body>
 </html>

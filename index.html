@@ -1,37 +1,62 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lista de Compras</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+    </style>
     <script src="script.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <main>
-        <section>
-            <table>
-                <thead>
-                    <tr>
-                        <th >categoria</th>
-                    </tr>
-                    <tr>
-                        <th>
-                        <input type="checkbox" name="selecionar" id="selecionar" checked>
-                        </th>
-                        <th>id</th>
-                        <th>nome</th>
-                        <th>quantidade</th>
-                        <th>unidade</th>    
-                        <th>valor unitário</th>
-                        <th>valor total</th>
-                        <th>nome</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody">
-                </tbody>
-            </table>
-        </section>
+      <section>
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <select name="categoria" id="categoria">
+                  <option value="bebes">bebês</option>
+                  <option value="bebidas">bebidas</option>
+                  <option value="carnes">carnes (açougue)</option>
+                  <option value="congelados">congelados</option>
+                  <option value="hortifruti">hortifruti (frescos)</option>
+                  <option value="higiene">higiene pessoal</option>
+                  <option value="laticinios">laticínios e frios</option>
+                  <option value="limpeza">limpeza doméstica</option>
+                  <option value="mercearia">mercearia seca</option>
+                  <option value="padaria">padaria</option>
+                  <option value="pets">pet shop</option>
+                  <option value="snacks">snacks e doces</option>
+                </select>
+              </th>
+            </tr>
+            <tr>
+              <th>incluir</th>
+              <!-- <th>id</th> -->
+              <th>nome</th>
+              <th>quantidade</th>
+              <th>valor</th>
+              <th>unidade</th>
+              <th>total</th>
+              <th>ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+            <tr>
+                <td><input type="checkbox" name="" class="incluir" aria-label="incluir pão de forma"></td>
+                <td>Pão de forma</td>
+                <td>2</td>
+                <td>5</td>
+                <td>pacote</td>
+                <td>10</td>
+                <td>editar / excluir</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
     </main>
-</body>
+  </body>
 </html>

@@ -1,71 +1,93 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Lista de Compras</title>
+
     <link rel="stylesheet" href="style.css" />
+
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
     </style>
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
+
     <script src="script.js" defer></script>
   </head>
 
   <body>
     <main>
+
       <!-- ===================== -->
-      <!-- TOOLBAR (AÇÕES) -->
+      <!-- TOOLBAR -->
       <!-- ===================== -->
+
       <section class="toolbar">
+
         <select name="categoria" id="categoria">
-          <option value="todas">todas as categorias</option>
-          <option value="bebes">bebês</option>
-          <option value="bebidas">bebidas</option>
-          <option value="carnes">carnes (açougue)</option>
-          <option value="congelados">congelados</option>
-          <option value="hortifruti">hortifruti (frescos)</option>
-          <option value="higiene">higiene pessoal</option>
-          <option value="laticinios">laticínios e frios</option>
-          <option value="limpeza">limpeza doméstica</option>
-          <option value="mercearia">mercearia seca</option>
-          <option value="padaria">padaria</option>
-          <option value="pets">pet shop</option>
-          <option value="snacks">snacks e doces</option>
+
+          <option value="todas">Todas as categorias</option>
+          <option value="bebes">Bebês</option>
+          <option value="bebidas">Bebidas</option>
+          <option value="carnes">Carnes (açougue)</option>
+          <option value="congelados">Congelados</option>
+          <option value="hortifruti">Hortifruti (frescos)</option>
+          <option value="higiene">Higiene pessoal</option>
+          <option value="laticinios">Laticínios e frios</option>
+          <option value="limpeza">Limpeza doméstica</option>
+          <option value="mercearia">Mercearia seca</option>
+          <option value="padaria">Padaria</option>
+          <option value="pets">Pet shop</option>
+          <option value="snacks">Snacks e doces</option>
+
         </select>
 
-        <input type="text" id="search" placeholder="Pesquisar item..." />
+        <input
+          type="text"
+          id="search"
+          placeholder="Pesquisar item..."
+        />
 
-        <button id="btn-open-modal">Novo item</button>
+        <button type="button" id="btn-open-modal">
+          Novo item
+        </button>
+
       </section>
 
       <!-- ===================== -->
       <!-- TABELA -->
       <!-- ===================== -->
-      <section>
+
+      <section class="table-container">
+
         <table>
+
           <thead>
             <tr>
-              <th>incluir</th>
-              <th>nome</th>
-              <th>quantidade</th>
-              <th>valor</th>
-              <th>unidade</th>
-              <th>total</th>
-              <th>ações</th>
+              <th>Incluir</th>
+              <th>Nome</th>
+              <th>Quantidade</th>
+              <th>Valor</th>
+              <th>Unidade</th>
+              <th>Total</th>
+              <th>Ações</th>
             </tr>
           </thead>
 
           <tbody id="tbody">
+
             <tr>
+
               <td>
                 <input
                   type="checkbox"
                   class="incluir"
-                  aria-label="incluir pão de forma"
+                  aria-label="Incluir pão de forma"
                 />
               </td>
 
@@ -76,31 +98,108 @@
               <td>10</td>
 
               <td>
-                <button>
+
+                <button
+                  type="button"
+                  aria-label="Editar item"
+                >
                   <span class="fa-solid fa-pen"></span>
                 </button>
 
-                <button>
+                <button
+                  type="button"
+                  aria-label="Excluir item"
+                >
                   <span class="fa-solid fa-trash"></span>
                 </button>
+
               </td>
+
             </tr>
+
           </tbody>
+
         </table>
+
       </section>
+
     </main>
 
     <!-- ===================== -->
     <!-- MODAL -->
     <!-- ===================== -->
-    <div class="modal hidden" id="modal">
+
+    <div class="modal-overlay hidden" id="modal">
+
       <div class="modal-content">
-        <h2>Adicionar item</h2>
+
+        <div class="modal-header">
+          <h2>Adicionar item</h2>
+        </div>
 
         <form id="form-item">
-          <!-- inputs futuros -->
+
+          <label for="nome">Nome</label>
+          <input
+            type="text"
+            name="nome"
+            id="nome"
+            placeholder="Digite o nome do item"
+          />
+
+          <label for="quantidade">Quantidade</label>
+          <input
+            type="number"
+            name="quantidade"
+            id="quantidade"
+            placeholder="Digite a quantidade"
+          />
+
+          <label for="valor">Valor</label>
+          <input
+            type="number"
+            name="valor"
+            id="valor"
+            step="0.01"
+            placeholder="Digite o valor"
+          />
+
+          <label for="unidade">Unidade</label>
+          <input
+            type="text"
+            name="unidade"
+            id="unidade"
+            placeholder="Ex: pacote, kg, litro..."
+          />
+
+          <label for="total">Total</label>
+          <input
+            type="number"
+            name="total"
+            id="total"
+            readonly
+          />
+
+          <div class="modal-actions">
+
+            <button
+              type="button"
+              id="btn-cancelar"
+            >
+              Cancelar
+            </button>
+
+            <button type="submit">
+              Salvar
+            </button>
+
+          </div>
+
         </form>
+
       </div>
+
     </div>
+
   </body>
 </html>

@@ -14,7 +14,27 @@ init();
 function init() {
     initForm();
     initEvents();
+    initTotalCalculation(); // 🔥 importante
     render();
+}
+
+// =====================
+// CALCULAR TOTAL EM TEMPO REAL
+// =====================
+function initTotalCalculation() {
+    const quantidade = document.querySelector("#quantidade");
+    const valor = document.querySelector("#valor");
+    const total = document.querySelector("#total");
+
+    function calculate() {
+        const q = Number(quantidade.value);
+        const v = Number(valor.value);
+
+        total.value = (q * v) || 0;
+    }
+
+    quantidade.addEventListener("input", calculate);
+    valor.addEventListener("input", calculate);
 }
 
 // =====================
@@ -76,25 +96,15 @@ function getFormData() {
         nome: document.querySelector("#nome").value.trim(),
         quantidade: Number(document.querySelector("#quantidade").value),
         valor: Number(document.querySelector("#valor").value),
-        unidade: document.querySelector("#unidade").value.trim(),
-        categoria: document.querySelector("#categoria").value,
-        total:
-            Number(document.querySelector("#quantidade").value) *
-            Number(document.querySelector("#valor").value)
+        total: Number(document.querySelector("#total").value)
     };
 }
 
 // =====================
 // VALIDATION
 // =====================
-function validate({ nome, quantidade, valor, unidade, categoria }) {
-    return (
-        nome !== "" &&
-        quantidade > 0 &&
-        valor > 0 &&
-        unidade !== "" &&
-        categoria !== ""
-    );
+function validate({ nome, quantidade, valor }) {
+    return nome !== "" && quantidade > 0 && valor > 0;
 }
 
 // =====================
@@ -119,7 +129,7 @@ function deleteItem(id) {
 }
 
 // =====================
-// CLICK TABLE
+// TABLE EVENTS
 // =====================
 function handleTableClick(e) {
     const btn = e.target.closest("button");
@@ -149,8 +159,7 @@ function openEdit(id) {
     document.querySelector("#nome").value = item.nome;
     document.querySelector("#quantidade").value = item.quantidade;
     document.querySelector("#valor").value = item.valor;
-    document.querySelector("#unidade").value = item.unidade;
-    document.querySelector("#categoria").value = item.categoria;
+    document.querySelector("#total").value = item.total;
 
     openModal();
 }
@@ -164,66 +173,35 @@ function openModal() {
 
 function closeModal() {
     document.querySelector("#modal").classList.add("hidden");
-
+    
     state.currentId = null;
     document.querySelector("#form-item").reset();
 }
 
 // =====================
-// GROUP BY CATEGORY
-// =====================
-function groupByCategory(items) {
-    return items.reduce((acc, item) => {
-        const cat = item.categoria || "sem categoria";
-
-        if (!acc[cat]) acc[cat] = [];
-        acc[cat].push(item);
-
-        return acc;
-    }, {});
-}
-
-// =====================
-// RENDER (SEM ACCORDION)
+// RENDER
 // =====================
 function render() {
     const body = document.querySelector("#tbody");
 
-    const grouped = groupByCategory(state.items);
+    body.innerHTML = state.items.map(item => `
+        <tr>
+            <td><input type="checkbox"></td>
 
-    body.innerHTML = Object.entries(grouped).map(([categoria, items]) => {
+            <td>${item.nome}</td>
+            <td>${item.quantidade}</td>
+            <td>${item.valor}</td>
+            <td>${item.total}</td>
 
-        return `
-            <!-- CATEGORIA -->
-            <tr style="background:#e5e7eb; font-weight:bold;">
-                <td colspan="7">
-                    ${categoria.toUpperCase()} 
-                    (${items.length} ${items.length === 1 ? "item" : "itens"})
-                </td>
-            </tr>
+            <td>
+                <button data-id="${item.id}">
+                    <span class="fa-solid fa-pen"></span>
+                </button>
 
-            <!-- ITENS -->
-            ${items.map(item => `
-                <tr>
-                    <td><input type="checkbox"></td>
-
-                    <td>${item.nome}</td>
-                    <td>${item.quantidade}</td>
-                    <td>${item.valor}</td>
-                    <td>${item.unidade}</td>
-                    <td>${item.total}</td>
-
-                    <td>
-                        <button data-id="${item.id}">
-                            <span class="fa-solid fa-pen"></span>
-                        </button>
-
-                        <button data-id="${item.id}">
-                            <span class="fa-solid fa-trash"></span>
-                        </button>
-                    </td>
-                </tr>
-            `).join("")}
-        `;
-    }).join("");
+                <button data-id="${item.id}">
+                    <span class="fa-solid fa-trash"></span>
+                </button>
+            </td>
+        </tr>
+    `).join("");
 }

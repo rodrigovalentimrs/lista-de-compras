@@ -1,27 +1,53 @@
-//memória atual da aplicação
+// =====================
+// ESTADO
+// =====================
 const state = {
     items: [],
-    currentId: null,
+    currentId: null
 };
 
+// =====================
+// INIT
+// =====================
 init();
 
 function init() {
     initForm();
-    initEvent();
+    initEvents();
     render();
 }
 
+// =====================
+// FORM
+// =====================
 function initForm() {
     const form = document.querySelector("#form-item");
     form.addEventListener("submit", handleSubmit);
 }
 
-function initEvent() {
-    const body = document.querySelector("#tbody");
-    body.addEventListener("click", handleClick);
+// =====================
+// EVENTS
+// =====================
+function initEvents() {
+    const tbody = document.querySelector("#tbody");
+    const modal = document.querySelector("#modal");
+
+    tbody.addEventListener("click", handleTableClick);
+
+    document.querySelector("#btn-open-modal")
+        .addEventListener("click", openModal);
+
+    document.querySelector("#btn-cancelar")
+        .addEventListener("click", closeModal);
+
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+    });
 }
 
+// =====================
+// SUBMIT
+// =====================
 function handleSubmit(e) {
     e.preventDefault();
 
@@ -31,54 +57,55 @@ function handleSubmit(e) {
 
     if (state.currentId) {
         updateItem(state.currentId, data);
-
         state.currentId = null;
-
     } else {
         createItem(data);
     }
 
     render();
-
+    closeModal();
     e.target.reset();
 }
 
+// =====================
+// FORM DATA
+// =====================
 function getFormData() {
-    const nome = document.querySelector("#nome").value.trim();
-    const quantidade = Number(document.querySelector("#quantidade").value);
-    const valor = Number(document.querySelector("#valor").value);
-    const unidade = document.querySelector("#unidade").value.trim();
-    const total = quantidade * valor;
-
-
     return {
-        id: Date.now(),
-        nome,
-        quantidade,
-        valor,
-        unidade,
-        total
-    }
+        id: state.currentId || Date.now(),
+        nome: document.querySelector("#nome").value.trim(),
+        quantidade: Number(document.querySelector("#quantidade").value),
+        valor: Number(document.querySelector("#valor").value),
+        unidade: document.querySelector("#unidade").value.trim(),
+        categoria: document.querySelector("#categoria").value,
+        total:
+            Number(document.querySelector("#quantidade").value) *
+            Number(document.querySelector("#valor").value)
+    };
 }
 
-function validate({ nome, quantidade, valor, unidade }) {
-    const rules = [
-        nome?.trim() !== "",
-        Number.isFinite(quantidade) && quantidade > 0,
-        Number.isFinite(valor) && valor > 0,
-        unidade?.trim() !== ""
-    ];
-    return rules.every(Boolean);
+// =====================
+// VALIDATION
+// =====================
+function validate({ nome, quantidade, valor, unidade, categoria }) {
+    return (
+        nome !== "" &&
+        quantidade > 0 &&
+        valor > 0 &&
+        unidade !== "" &&
+        categoria !== ""
+    );
 }
 
+// =====================
+// CRUD
+// =====================
 function createItem(data) {
     state.items.push(data);
 }
 
 function updateItem(id, newData) {
-
-    const index = state.items.findIndex(item => item.id === id);
-
+    const index = state.items.findIndex(i => i.id === id);
     if (index === -1) return;
 
     state.items[index] = {
@@ -87,43 +114,116 @@ function updateItem(id, newData) {
     };
 }
 
-function deleteItem() {
-    state.items = state.items.filter(item => item.id !== id);
+function deleteItem(id) {
+    state.items = state.items.filter(i => i.id !== id);
 }
 
-function render() {
+// =====================
+// CLICK TABLE
+// =====================
+function handleTableClick(e) {
+    const btn = e.target.closest("button");
+    if (!btn) return;
 
+    const id = Number(btn.dataset.id);
+
+    if (btn.querySelector(".fa-pen")) {
+        openEdit(id);
+    }
+
+    if (btn.querySelector(".fa-trash")) {
+        deleteItem(id);
+        render();
+    }
+}
+
+// =====================
+// EDIT
+// =====================
+function openEdit(id) {
+    const item = state.items.find(i => i.id === id);
+    if (!item) return;
+
+    state.currentId = id;
+
+    document.querySelector("#nome").value = item.nome;
+    document.querySelector("#quantidade").value = item.quantidade;
+    document.querySelector("#valor").value = item.valor;
+    document.querySelector("#unidade").value = item.unidade;
+    document.querySelector("#categoria").value = item.categoria;
+
+    openModal();
+}
+
+// =====================
+// MODAL
+// =====================
+function openModal() {
+    document.querySelector("#modal").classList.remove("hidden");
+}
+
+function closeModal() {
+    document.querySelector("#modal").classList.add("hidden");
+
+    state.currentId = null;
+    document.querySelector("#form-item").reset();
+}
+
+// =====================
+// GROUP BY CATEGORY
+// =====================
+function groupByCategory(items) {
+    return items.reduce((acc, item) => {
+        const cat = item.categoria || "sem categoria";
+
+        if (!acc[cat]) acc[cat] = [];
+        acc[cat].push(item);
+
+        return acc;
+    }, {});
+}
+
+// =====================
+// RENDER (SEM ACCORDION)
+// =====================
+function render() {
     const body = document.querySelector("#tbody");
 
-    body.innerHTML = state.items.map(item => `
-        <tr>
+    const grouped = groupByCategory(state.items);
 
-            <!-- CHECKBOX -->
-            <td>
-                <input type="checkbox" ${item.checked ? "checked" : ""}>
-            </td>
+    body.innerHTML = Object.entries(grouped).map(([categoria, items]) => {
 
-            <!-- DADOS -->
-            <td>${item.nome}</td>
-            <td>${item.quantidade}</td>
-            <td>${item.valor}</td>
-            <td>${item.unidade}</td>
-            <td>${item.total}</td>
+        return `
+            <!-- CATEGORIA -->
+            <tr style="background:#e5e7eb; font-weight:bold;">
+                <td colspan="7">
+                    ${categoria.toUpperCase()} 
+                    (${items.length} ${items.length === 1 ? "item" : "itens"})
+                </td>
+            </tr>
 
-            <!-- AÇÕES -->
-            <td>
-                <button type="button" aria-label="Editar item" data-id="${item.id}">
-                    <span class="fa-solid fa-pen"></span>
-                </button>
+            <!-- ITENS -->
+            ${items.map(item => `
+                <tr>
+                    <td><input type="checkbox"></td>
 
-                <button type="button" aria-label="Excluir item" data-id="${item.id}">
-                    <span class="fa-solid fa-trash"></span>
-                </button>
-            </td>
+                    <td>${item.nome}</td>
+                    <td>${item.quantidade}</td>
+                    <td>${item.valor}</td>
+                    <td>${item.unidade}</td>
+                    <td>${item.total}</td>
 
-        </tr>
-    `).join("");
+                    <td>
+                        <button data-id="${item.id}">
+                            <span class="fa-solid fa-pen"></span>
+                        </button>
 
-    // eventos (porque innerHTML recria tudo)
-    bindEvents();
+                        <button data-id="${item.id}">
+                            <span class="fa-solid fa-trash"></span>
+                        </button>
+                    </td>
+                </tr>
+            `).join("")}
+        `;
+    }).join("");
 }

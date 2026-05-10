@@ -65,9 +65,8 @@
               <th>Ações</th>
             </tr>
           </thead>
-          
-          <tbody id="tbody">
-          </tbody>
+
+          <tbody id="tbody"></tbody>
         </table>
       </section>
     </main>
@@ -115,6 +114,23 @@
             id="unidade"
             placeholder="Ex: pacote, kg, litro..."
           />
+
+          <!-- ✔️ AQUI ENTRA A CATEGORIA -->
+          <label for="categoria">Categoria</label>
+          <select id="categoria">
+            <option value="bebes">Bebês</option>
+            <option value="bebidas">Bebidas</option>
+            <option value="carnes">Carnes</option>
+            <option value="congelados">Congelados</option>
+            <option value="hortifruti">Hortifruti</option>
+            <option value="higiene">Higiene</option>
+            <option value="laticinios">Laticínios</option>
+            <option value="limpeza">Limpeza</option>
+            <option value="mercearia">Mercearia</option>
+            <option value="padaria">Padaria</option>
+            <option value="pets">Pets</option>
+            <option value="snacks">Snacks</option>
+          </select>
 
           <div class="modal-actions">
             <button type="button" id="btn-cancelar">Cancelar</button>

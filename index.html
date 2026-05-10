@@ -22,15 +22,12 @@
 
   <body>
     <main>
-
       <!-- ===================== -->
       <!-- TOOLBAR -->
       <!-- ===================== -->
 
       <section class="toolbar">
-
         <select name="categoria" id="categoria">
-
           <option value="todas">Todas as categorias</option>
           <option value="bebes">Bebês</option>
           <option value="bebidas">Bebidas</option>
@@ -44,19 +41,11 @@
           <option value="padaria">Padaria</option>
           <option value="pets">Pet shop</option>
           <option value="snacks">Snacks e doces</option>
-
         </select>
 
-        <input
-          type="text"
-          id="search"
-          placeholder="Pesquisar item..."
-        />
+        <input type="text" id="search" placeholder="Pesquisar item..." />
 
-        <button type="button" id="btn-open-modal">
-          Novo item
-        </button>
-
+        <button type="button" id="btn-open-modal">Novo item</button>
       </section>
 
       <!-- ===================== -->
@@ -64,9 +53,7 @@
       <!-- ===================== -->
 
       <section class="table-container">
-
         <table>
-
           <thead>
             <tr>
               <th>Incluir</th>
@@ -78,51 +65,11 @@
               <th>Ações</th>
             </tr>
           </thead>
-
+          
           <tbody id="tbody">
-
-            <tr>
-
-              <td>
-                <input
-                  type="checkbox"
-                  class="incluir"
-                  aria-label="Incluir pão de forma"
-                />
-              </td>
-
-              <td>Pão de forma</td>
-              <td>2</td>
-              <td>5</td>
-              <td>pacote</td>
-              <td>10</td>
-
-              <td>
-
-                <button
-                  type="button"
-                  aria-label="Editar item"
-                >
-                  <span class="fa-solid fa-pen"></span>
-                </button>
-
-                <button
-                  type="button"
-                  aria-label="Excluir item"
-                >
-                  <span class="fa-solid fa-trash"></span>
-                </button>
-
-              </td>
-
-            </tr>
-
           </tbody>
-
         </table>
-
       </section>
-
     </main>
 
     <!-- ===================== -->
@@ -130,15 +77,12 @@
     <!-- ===================== -->
 
     <div class="modal-overlay hidden" id="modal">
-
       <div class="modal-content">
-
         <div class="modal-header">
           <h2>Adicionar item</h2>
         </div>
 
         <form id="form-item">
-
           <label for="nome">Nome</label>
           <input
             type="text"
@@ -172,34 +116,13 @@
             placeholder="Ex: pacote, kg, litro..."
           />
 
-          <label for="total">Total</label>
-          <input
-            type="number"
-            name="total"
-            id="total"
-            readonly
-          />
-
           <div class="modal-actions">
+            <button type="button" id="btn-cancelar">Cancelar</button>
 
-            <button
-              type="button"
-              id="btn-cancelar"
-            >
-              Cancelar
-            </button>
-
-            <button type="submit">
-              Salvar
-            </button>
-
+            <button type="submit">Salvar</button>
           </div>
-
         </form>
-
       </div>
-
     </div>
-
   </body>
 </html>

@@ -14,7 +14,7 @@ init();
 function init() {
     initForm();
     initEvents();
-    initTotalCalculation(); // 🔥 importante
+    initTotalCalculation();
     render();
 }
 
@@ -30,7 +30,7 @@ function initTotalCalculation() {
         const q = Number(quantidade.value);
         const v = Number(valor.value);
 
-        total.value = (q * v) || 0;
+        total.value = q * v;
     }
 
     quantidade.addEventListener("input", calculate);
@@ -49,6 +49,7 @@ function initForm() {
 // EVENTS
 // =====================
 function initEvents() {
+
     const tbody = document.querySelector("#tbody");
     const modal = document.querySelector("#modal");
 
@@ -63,6 +64,22 @@ function initEvents() {
     modal.addEventListener("click", (e) => {
         if (e.target === modal) closeModal();
     });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            closeModal();
+        }
+    });
+}
+
+// =====================
+// CLEAR ERRORS
+// =====================
+function clearErrors() {
+
+    document.querySelector("#error-nome").textContent = "";
+    document.querySelector("#error-quantidade").textContent = "";
+    document.querySelector("#error-valor").textContent = "";
 }
 
 // =====================
@@ -104,7 +121,30 @@ function getFormData() {
 // VALIDATION
 // =====================
 function validate({ nome, quantidade, valor }) {
-    return nome !== "" && quantidade > 0 && valor > 0;
+
+    clearErrors();
+
+    let isValid = true;
+
+    if (nome.trim() === "" || /\d/.test(nome)) {
+        document.querySelector("#error-nome").textContent =
+            "Nome inválido!";
+        isValid = false;
+    }
+
+    if (quantidade <= 0) {
+        document.querySelector("#error-quantidade").textContent =
+            "Quantidade inválida";
+        isValid = false;
+    }
+
+    if (valor <= 0) {
+        document.querySelector("#error-valor").textContent =
+            "Valor inválido";
+        isValid = false;
+    }
+
+    return isValid;
 }
 
 // =====================
@@ -115,13 +155,12 @@ function createItem(data) {
 }
 
 function updateItem(id, newData) {
-    const index = state.items.findIndex(i => i.id === id);
-    if (index === -1) return;
 
-    state.items[index] = {
-        ...state.items[index],
-        ...newData
-    };
+    const item = state.items.find(i => i.id === id);
+
+    if (!item) return;
+
+    Object.assign(item, newData);
 }
 
 function deleteItem(id) {
@@ -169,13 +208,16 @@ function openEdit(id) {
 // =====================
 function openModal() {
     document.querySelector("#modal").classList.remove("hidden");
+    document.querySelector("#nome").focus();
 }
 
 function closeModal() {
     document.querySelector("#modal").classList.add("hidden");
-    
+
     state.currentId = null;
     document.querySelector("#form-item").reset();
+
+    clearErrors();
 }
 
 // =====================

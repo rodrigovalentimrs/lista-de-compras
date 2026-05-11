@@ -1,84 +1,94 @@
 <!doctype html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Lista de Compras</title>
+  <title>Lista de Compras</title>
 
-    <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css" />
 
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap");
-    </style>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap");
+  </style>
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
 
-    <script src="script.js" defer></script>
-  </head>
+  <script src="script.js" defer></script>
+</head>
 
-  <body>
-    <main>
+<body>
+  <main>
 
-      <!-- TOOLBAR -->
-      <section class="toolbar">
-        <button type="button" id="btn-open-modal">Novo item</button>
-      </section>
+    <!-- TOOLBAR -->
+    <section class="toolbar">
+      <button type="button" id="btn-open-modal">Novo item</button>
+    </section>
 
-      <!-- TABELA -->
-      <section class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Incluir</th>
-              <th>Nome</th>
-              <th>Quantidade</th>
-              <th>Valor</th>
-              <th>Total</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
+    <!-- TABELA -->
+    <section class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Incluir</th>
+            <th>Nome</th>
+            <th>Quantidade</th>
+            <th>Valor</th>
+            <th>Total</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
 
-          <tbody id="tbody"></tbody>
-        </table>
-      </section>
+        <tbody id="tbody"></tbody>
+      </table>
+    </section>
 
-    </main>
+  </main>
 
-    <!-- MODAL -->
-    <div class="modal-overlay hidden" id="modal">
-      <div class="modal-content">
+  <!-- MODAL -->
+  <div class="modal-overlay hidden" id="modal">
+    <div class="modal-content">
 
-        <div class="modal-header">
-          <h2>Adicionar item</h2>
+      <div class="modal-header">
+        <h2>Adicionar item</h2>
+      </div>
+
+      <form id="form-item">
+
+        <div class="form-group">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" placeholder="Digite o nome do item" maxlength="50" />
+          <small class="error" id="error-nome"></small>
         </div>
 
-        <form id="form-item">
-
-          <label for="nome">Nome</label>
-          <input type="text" id="nome" placeholder="Digite o nome do item" />
-
+        <div class="form-group">
           <label for="quantidade">Quantidade</label>
-          <input type="number" id="quantidade" placeholder="Quantidade" />
+          <input type="number" id="quantidade" placeholder="Quantidade" min="1" />
+          <small class="error" id="error-quantidade"></small>
+        </div>
 
+        <div class="form-group">
           <label for="valor">Valor</label>
-          <input type="number" id="valor" step="0.01" placeholder="Valor" />
+          <input type="number" id="valor" step="0.01" placeholder="Valor" min="1" />
+          <small class="error" id="error-valor"></small>
+        </div>
 
-          <!-- TOTAL AUTOMÁTICO -->
+        <div class="form-group">
           <label for="total">Total</label>
           <input type="number" id="total" disabled />
+        </div>
 
-          <div class="modal-actions">
-            <button type="button" id="btn-cancelar">Cancelar</button>
-            <button type="submit">Salvar</button>
-          </div>
+        <div class="modal-actions">
+          <button type="button" id="btn-cancelar">Cancelar</button>
+          <button type="submit">Salvar</button>
+        </div>
 
-        </form>
-      </div>
+      </form>
     </div>
+  </div>
 
-  </body>
+</body>
 </html>

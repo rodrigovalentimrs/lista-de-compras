@@ -1,8 +1,13 @@
 <!doctype html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>Lista de Compras</title>
 
@@ -21,74 +26,186 @@
 </head>
 
 <body>
+
   <main>
 
-    <!-- TOOLBAR -->
-    <section class="toolbar">
-      <button type="button" id="btn-open-modal">Novo item</button>
+    <!-- HEADER -->
+    <section class="header">
+
+      <!-- BOTÃO -->
+      <button
+        type="button"
+        id="btn-open-modal"
+      >
+        Novo item
+      </button>
+
+      <!-- TÍTULO -->
+      <h1>Lista de Compras</h1>
+
+      <!-- TOTAL -->
+      <div class="summary-card">
+
+        <span>Total selecionado</span>
+
+        <strong id="selected-total">
+          R$ 0,00
+        </strong>
+
+      </div>
+
     </section>
 
     <!-- TABELA -->
     <section class="table-container">
+
       <table>
+
         <thead>
+
           <tr>
-            <th>Incluir</th>
+
+            <th>Selecionar</th>
+
             <th>Nome</th>
+
             <th>Quantidade</th>
+
             <th>Valor</th>
+
             <th>Total</th>
+
             <th>Ações</th>
+
           </tr>
+
         </thead>
 
         <tbody id="tbody"></tbody>
+
       </table>
+
     </section>
 
   </main>
 
   <!-- MODAL -->
-  <div class="modal-overlay hidden" id="modal">
+  <div
+    class="modal-overlay hidden"
+    id="modal"
+  >
+
     <div class="modal-content">
 
       <div class="modal-header">
+
         <h2>Adicionar item</h2>
+
       </div>
 
       <form id="form-item">
 
+        <!-- NOME -->
         <div class="form-group">
-          <label for="nome">Nome</label>
-          <input type="text" id="nome" placeholder="Digite o nome do item" maxlength="50" />
-          <small class="error" id="error-nome"></small>
+
+          <label for="nome">
+            Nome
+          </label>
+
+          <input
+            type="text"
+            id="nome"
+            placeholder="Digite o nome do item"
+            maxlength="50"
+          />
+
+          <small
+            class="error"
+            id="error-nome"
+          ></small>
+
         </div>
 
+        <!-- QUANTIDADE -->
         <div class="form-group">
-          <label for="quantidade">Quantidade</label>
-          <input type="number" id="quantidade" placeholder="Quantidade" min="1" />
-          <small class="error" id="error-quantidade"></small>
+
+          <label for="quantidade">
+            Quantidade
+          </label>
+
+          <input
+            type="number"
+            id="quantidade"
+            placeholder="Quantidade"
+            min="1"
+          />
+
+          <small
+            class="error"
+            id="error-quantidade"
+          ></small>
+
         </div>
 
+        <!-- VALOR -->
         <div class="form-group">
-          <label for="valor">Valor</label>
-          <input type="number" id="valor" step="0.01" placeholder="Valor" min="1" />
-          <small class="error" id="error-valor"></small>
+
+          <label for="valor">
+            Valor
+          </label>
+
+          <input
+            type="number"
+            id="valor"
+            step="0.01"
+            placeholder="Valor"
+            min="1"
+          />
+
+          <small
+            class="error"
+            id="error-valor"
+          ></small>
+
         </div>
 
+        <!-- TOTAL -->
         <div class="form-group">
-          <label for="total">Total</label>
-          <input type="number" id="total" disabled />
+
+          <label for="total">
+            Total
+          </label>
+
+          <input
+            type="number"
+            id="total"
+            disabled
+          />
+
         </div>
 
+        <!-- ACTIONS -->
         <div class="modal-actions">
-          <button type="button" id="btn-cancelar">Cancelar</button>
-          <button type="submit">Salvar</button>
+
+          <button
+            type="button"
+            id="btn-cancelar"
+          >
+            Cancelar
+          </button>
+
+          <button type="submit">
+            Salvar
+          </button>
+
         </div>
 
       </form>
+
     </div>
+
   </div>
 
 </body>
+
 </html>

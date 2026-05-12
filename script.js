@@ -7,6 +7,29 @@ const state = {
 };
 
 // =====================
+// ELEMENTOS
+// =====================
+const elements = {
+    form: document.querySelector("#form-item"),
+    modal: document.querySelector("#modal"),
+    tbody: document.querySelector("#tbody"),
+
+    nome: document.querySelector("#nome"),
+    quantidade: document.querySelector("#quantidade"),
+    valor: document.querySelector("#valor"),
+    total: document.querySelector("#total"),
+
+    errorNome: document.querySelector("#error-nome"),
+    errorQuantidade: document.querySelector("#error-quantidade"),
+    errorValor: document.querySelector("#error-valor"),
+
+    totalSelecionado: document.querySelector("#selected-total"),
+
+    btnOpenModal: document.querySelector("#btn-open-modal"),
+    btnCancelar: document.querySelector("#btn-cancelar")
+};
+
+// =====================
 // INIT
 // =====================
 init();
@@ -19,30 +42,38 @@ function init() {
 }
 
 // =====================
-// CALCULAR TOTAL EM TEMPO REAL
+// CALCULAR TOTAL FORM
 // =====================
 function initTotalCalculation() {
-    const quantidade = document.querySelector("#quantidade");
-    const valor = document.querySelector("#valor");
-    const total = document.querySelector("#total");
 
     function calculate() {
-        const q = Number(quantidade.value);
-        const v = Number(valor.value);
 
-        total.value = q * v;
+        const q = Number(elements.quantidade.value);
+        const v = Number(elements.valor.value);
+
+        elements.total.value = q * v;
     }
 
-    quantidade.addEventListener("input", calculate);
-    valor.addEventListener("input", calculate);
+    elements.quantidade.addEventListener(
+        "input",
+        calculate
+    );
+
+    elements.valor.addEventListener(
+        "input",
+        calculate
+    );
 }
 
 // =====================
 // FORM
 // =====================
 function initForm() {
-    const form = document.querySelector("#form-item");
-    form.addEventListener("submit", handleSubmit);
+
+    elements.form.addEventListener(
+        "submit",
+        handleSubmit
+    );
 }
 
 // =====================
@@ -50,26 +81,45 @@ function initForm() {
 // =====================
 function initEvents() {
 
-    const tbody = document.querySelector("#tbody");
-    const modal = document.querySelector("#modal");
+    elements.tbody.addEventListener(
+        "click",
+        handleTableClick
+    );
 
-    tbody.addEventListener("click", handleTableClick);
+    elements.tbody.addEventListener(
+        "change",
+        handleCheckboxChange
+    );
 
-    document.querySelector("#btn-open-modal")
-        .addEventListener("click", openModal);
+    elements.btnOpenModal.addEventListener(
+        "click",
+        openModal
+    );
 
-    document.querySelector("#btn-cancelar")
-        .addEventListener("click", closeModal);
+    elements.btnCancelar.addEventListener(
+        "click",
+        closeModal
+    );
 
-    modal.addEventListener("click", (e) => {
-        if (e.target === modal) closeModal();
-    });
+    elements.modal.addEventListener(
+        "click",
+        (e) => {
 
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-            closeModal();
+            if (e.target === elements.modal) {
+                closeModal();
+            }
         }
-    });
+    );
+
+    document.addEventListener(
+        "keydown",
+        (e) => {
+
+            if (e.key === "Escape") {
+                closeModal();
+            }
+        }
+    );
 }
 
 // =====================
@@ -77,15 +127,18 @@ function initEvents() {
 // =====================
 function clearErrors() {
 
-    document.querySelector("#error-nome").textContent = "";
-    document.querySelector("#error-quantidade").textContent = "";
-    document.querySelector("#error-valor").textContent = "";
+    elements.errorNome.textContent = "";
+
+    elements.errorQuantidade.textContent = "";
+
+    elements.errorValor.textContent = "";
 }
 
 // =====================
 // SUBMIT
 // =====================
 function handleSubmit(e) {
+
     e.preventDefault();
 
     const data = getFormData();
@@ -93,14 +146,23 @@ function handleSubmit(e) {
     if (!validate(data)) return;
 
     if (state.currentId) {
-        updateItem(state.currentId, data);
+
+        updateItem(
+            state.currentId,
+            data
+        );
+
         state.currentId = null;
+
     } else {
+
         createItem(data);
     }
 
     render();
+
     closeModal();
+
     e.target.reset();
 }
 
@@ -108,39 +170,65 @@ function handleSubmit(e) {
 // FORM DATA
 // =====================
 function getFormData() {
+
     return {
         id: state.currentId || Date.now(),
-        nome: document.querySelector("#nome").value.trim(),
-        quantidade: Number(document.querySelector("#quantidade").value),
-        valor: Number(document.querySelector("#valor").value),
-        total: Number(document.querySelector("#total").value)
+
+        nome: elements.nome.value.trim(),
+
+        quantidade: Number(
+            elements.quantidade.value
+        ),
+
+        valor: Number(
+            elements.valor.value
+        ),
+
+        total: Number(
+            elements.total.value
+        ),
+
+        selected: false
     };
 }
 
 // =====================
 // VALIDATION
 // =====================
-function validate({ nome, quantidade, valor }) {
+function validate({
+    nome,
+    quantidade,
+    valor
+}) {
 
     clearErrors();
 
     let isValid = true;
 
-    if (nome.trim() === "" || /\d/.test(nome)) {
-        document.querySelector("#error-nome").textContent =
+    if (
+        nome.trim() === "" ||
+        /\d/.test(nome)
+    ) {
+
+        elements.errorNome.textContent =
             "Nome inválido!";
+
         isValid = false;
     }
 
     if (quantidade <= 0) {
-        document.querySelector("#error-quantidade").textContent =
+
+        elements.errorQuantidade.textContent =
             "Quantidade inválida";
+
         isValid = false;
     }
 
     if (valor <= 0) {
-        document.querySelector("#error-valor").textContent =
+
+        elements.errorValor.textContent =
             "Valor inválido";
+
         isValid = false;
     }
 
@@ -151,54 +239,129 @@ function validate({ nome, quantidade, valor }) {
 // CRUD
 // =====================
 function createItem(data) {
+
     state.items.push(data);
 }
 
 function updateItem(id, newData) {
 
-    const item = state.items.find(i => i.id === id);
+    const item = state.items.find(
+        item => item.id === id
+    );
 
     if (!item) return;
 
-    Object.assign(item, newData);
+    Object.assign(item, {
+        ...newData,
+        selected: item.selected
+    });
 }
 
 function deleteItem(id) {
-    state.items = state.items.filter(i => i.id !== id);
+
+    state.items = state.items.filter(
+        item => item.id !== id
+    );
 }
 
 // =====================
 // TABLE EVENTS
 // =====================
 function handleTableClick(e) {
+
     const btn = e.target.closest("button");
+
     if (!btn) return;
 
-    const id = Number(btn.dataset.id);
+    const id = Number(
+        btn.dataset.id
+    );
 
-    if (btn.querySelector(".fa-pen")) {
+    const action =
+        btn.dataset.action;
+
+    if (action === "edit") {
+
         openEdit(id);
     }
 
-    if (btn.querySelector(".fa-trash")) {
+    if (action === "delete") {
+
         deleteItem(id);
+
         render();
     }
+}
+
+// =====================
+// CHECKBOX
+// =====================
+function handleCheckboxChange(e) {
+
+    if (
+        !e.target.classList.contains(
+            "item-checkbox"
+        )
+    ) return;
+
+    const id = Number(
+        e.target.dataset.id
+    );
+
+    const item = state.items.find(
+        item => item.id === id
+    );
+
+    if (!item) return;
+
+    item.selected = e.target.checked;
+
+    calculateSelectedTotal();
+}
+
+function calculateSelectedTotal() {
+
+    const total = state.items
+        .filter(item => item.selected)
+
+        .reduce((acc, item) => {
+            return acc + item.total;
+        }, 0);
+
+    elements.totalSelecionado.textContent =
+        total.toLocaleString(
+            "pt-BR",
+            {
+                style: "currency",
+                currency: "BRL"
+            }
+        );
 }
 
 // =====================
 // EDIT
 // =====================
 function openEdit(id) {
-    const item = state.items.find(i => i.id === id);
+
+    const item = state.items.find(
+        item => item.id === id
+    );
+
     if (!item) return;
 
     state.currentId = id;
 
-    document.querySelector("#nome").value = item.nome;
-    document.querySelector("#quantidade").value = item.quantidade;
-    document.querySelector("#valor").value = item.valor;
-    document.querySelector("#total").value = item.total;
+    elements.nome.value =
+        item.nome;
+
+    elements.quantidade.value =
+        item.quantidade;
+
+    elements.valor.value =
+        item.valor;
+
+    elements.total.value =
+        item.total;
 
     openModal();
 }
@@ -207,15 +370,23 @@ function openEdit(id) {
 // MODAL
 // =====================
 function openModal() {
-    document.querySelector("#modal").classList.remove("hidden");
-    document.querySelector("#nome").focus();
+
+    elements.modal.classList.remove(
+        "hidden"
+    );
+
+    elements.nome.focus();
 }
 
 function closeModal() {
-    document.querySelector("#modal").classList.add("hidden");
+
+    elements.modal.classList.add(
+        "hidden"
+    );
 
     state.currentId = null;
-    document.querySelector("#form-item").reset();
+
+    elements.form.reset();
 
     clearErrors();
 }
@@ -224,26 +395,84 @@ function closeModal() {
 // RENDER
 // =====================
 function render() {
-    const body = document.querySelector("#tbody");
 
-    body.innerHTML = state.items.map(item => `
+    elements.tbody.innerHTML =
+        state.items.map(item => `
+
         <tr>
-            <td><input type="checkbox"></td>
-
-            <td>${item.nome}</td>
-            <td>${item.quantidade}</td>
-            <td>${item.valor}</td>
-            <td>${item.total}</td>
 
             <td>
-                <button data-id="${item.id}">
+
+                <input
+                    type="checkbox"
+                    class="item-checkbox"
+                    data-id="${item.id}"
+
+                    ${item.selected
+                        ? "checked"
+                        : ""
+                    }
+                />
+
+            </td>
+
+            <td>
+                ${item.nome}
+            </td>
+
+            <td>
+                ${item.quantidade}
+            </td>
+
+            <td>
+
+                ${item.valor.toLocaleString(
+                    "pt-BR",
+                    {
+                        style: "currency",
+                        currency: "BRL"
+                    }
+                )}
+
+            </td>
+
+            <td>
+
+                ${item.total.toLocaleString(
+                    "pt-BR",
+                    {
+                        style: "currency",
+                        currency: "BRL"
+                    }
+                )}
+
+            </td>
+
+            <td>
+
+                <button
+                    data-id="${item.id}"
+                    data-action="edit"
+                >
+
                     <span class="fa-solid fa-pen"></span>
+
                 </button>
 
-                <button data-id="${item.id}">
+                <button
+                    data-id="${item.id}"
+                    data-action="delete"
+                >
+
                     <span class="fa-solid fa-trash"></span>
+
                 </button>
+
             </td>
+
         </tr>
+
     `).join("");
+
+    calculateSelectedTotal();
 }

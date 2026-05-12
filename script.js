@@ -7,6 +7,130 @@ const state = {
 };
 
 // =====================
+// API
+// =====================
+const API_URL =
+    "http://localhost:3000/items";
+
+// =====================
+// LOCAL STORAGE
+// =====================
+function saveToLocalStorage() {
+
+    localStorage.setItem(
+        "items",
+        JSON.stringify(state.items)
+    );
+}
+
+function loadFromLocalStorage() {
+
+    const data =
+        localStorage.getItem("items");
+
+    if (!data) return;
+
+    state.items = JSON.parse(data);
+}
+
+// =====================
+// FETCH API
+// =====================
+async function fetchItems() {
+
+    try {
+
+        const response =
+            await fetch(API_URL);
+
+        const data =
+            await response.json();
+
+        state.items = data;
+
+        saveToLocalStorage();
+
+        render();
+
+    } catch (error) {
+
+        console.log(
+            "Erro ao buscar itens da API:",
+            error
+        );
+
+        loadFromLocalStorage();
+
+        render();
+    }
+}
+
+async function createItemAPI(data) {
+
+    try {
+
+        await fetch(API_URL, {
+            method: "POST",
+
+            headers: {
+                "Content-Type":
+                    "application/json"
+            },
+
+            body: JSON.stringify(data)
+        });
+
+    } catch (error) {
+
+        console.log(
+            "Erro ao criar item:",
+            error
+        );
+    }
+}
+
+async function updateItemAPI(id, data) {
+
+    try {
+
+        await fetch(`${API_URL}/${id}`, {
+            method: "PUT",
+
+            headers: {
+                "Content-Type":
+                    "application/json"
+            },
+
+            body: JSON.stringify(data)
+        });
+
+    } catch (error) {
+
+        console.log(
+            "Erro ao atualizar item:",
+            error
+        );
+    }
+}
+
+async function deleteItemAPI(id) {
+
+    try {
+
+        await fetch(`${API_URL}/${id}`, {
+            method: "DELETE"
+        });
+
+    } catch (error) {
+
+        console.log(
+            "Erro ao deletar item:",
+            error
+        );
+    }
+}
+
+// =====================
 // ELEMENTOS
 // =====================
 const elements = {
@@ -23,10 +147,20 @@ const elements = {
     errorQuantidade: document.querySelector("#error-quantidade"),
     errorValor: document.querySelector("#error-valor"),
 
-    totalSelecionado: document.querySelector("#selected-total"),
+    totalSelecionado:
+        document.querySelector(
+            "#selected-total"
+        ),
 
-    btnOpenModal: document.querySelector("#btn-open-modal"),
-    btnCancelar: document.querySelector("#btn-cancelar")
+    btnOpenModal:
+        document.querySelector(
+            "#btn-open-modal"
+        ),
+
+    btnCancelar:
+        document.querySelector(
+            "#btn-cancelar"
+        )
 };
 
 // =====================
@@ -34,11 +168,15 @@ const elements = {
 // =====================
 init();
 
-function init() {
+async function init() {
+
     initForm();
+
     initEvents();
+
     initTotalCalculation();
-    render();
+
+    await fetchItems();
 }
 
 // =====================
@@ -48,10 +186,16 @@ function initTotalCalculation() {
 
     function calculate() {
 
-        const q = Number(elements.quantidade.value);
-        const v = Number(elements.valor.value);
+        const q = Number(
+            elements.quantidade.value
+        );
 
-        elements.total.value = q * v;
+        const v = Number(
+            elements.valor.value
+        );
+
+        elements.total.value =
+            q * v;
     }
 
     elements.quantidade.addEventListener(
@@ -105,7 +249,11 @@ function initEvents() {
         "click",
         (e) => {
 
-            if (e.target === elements.modal) {
+            if (
+                e.target ===
+                elements.modal
+            ) {
+
                 closeModal();
             }
         }
@@ -115,7 +263,10 @@ function initEvents() {
         "keydown",
         (e) => {
 
-            if (e.key === "Escape") {
+            if (
+                e.key === "Escape"
+            ) {
+
                 closeModal();
             }
         }
@@ -127,17 +278,20 @@ function initEvents() {
 // =====================
 function clearErrors() {
 
-    elements.errorNome.textContent = "";
+    elements.errorNome.textContent =
+        "";
 
-    elements.errorQuantidade.textContent = "";
+    elements.errorQuantidade.textContent =
+        "";
 
-    elements.errorValor.textContent = "";
+    elements.errorValor.textContent =
+        "";
 }
 
 // =====================
 // SUBMIT
 // =====================
-function handleSubmit(e) {
+async function handleSubmit(e) {
 
     e.preventDefault();
 
@@ -147,7 +301,7 @@ function handleSubmit(e) {
 
     if (state.currentId) {
 
-        updateItem(
+        await updateItem(
             state.currentId,
             data
         );
@@ -156,7 +310,7 @@ function handleSubmit(e) {
 
     } else {
 
-        createItem(data);
+        await createItem(data);
     }
 
     render();
@@ -172,9 +326,12 @@ function handleSubmit(e) {
 function getFormData() {
 
     return {
-        id: state.currentId || Date.now(),
+        id:
+            state.currentId ||
+            Date.now(),
 
-        nome: elements.nome.value.trim(),
+        nome:
+            elements.nome.value.trim(),
 
         quantidade: Number(
             elements.quantidade.value
@@ -238,16 +395,24 @@ function validate({
 // =====================
 // CRUD
 // =====================
-function createItem(data) {
+async function createItem(data) {
 
     state.items.push(data);
+
+    saveToLocalStorage();
+
+    await createItemAPI(data);
 }
 
-function updateItem(id, newData) {
+async function updateItem(
+    id,
+    newData
+) {
 
-    const item = state.items.find(
-        item => item.id === id
-    );
+    const item =
+        state.items.find(
+            item => item.id === id
+        );
 
     if (!item) return;
 
@@ -255,13 +420,25 @@ function updateItem(id, newData) {
         ...newData,
         selected: item.selected
     });
+
+    saveToLocalStorage();
+
+    await updateItemAPI(
+        id,
+        item
+    );
 }
 
-function deleteItem(id) {
+async function deleteItem(id) {
 
-    state.items = state.items.filter(
-        item => item.id !== id
-    );
+    state.items =
+        state.items.filter(
+            item => item.id !== id
+        );
+
+    saveToLocalStorage();
+
+    await deleteItemAPI(id);
 }
 
 // =====================
@@ -269,7 +446,8 @@ function deleteItem(id) {
 // =====================
 function handleTableClick(e) {
 
-    const btn = e.target.closest("button");
+    const btn =
+        e.target.closest("button");
 
     if (!btn) return;
 
@@ -308,25 +486,39 @@ function handleCheckboxChange(e) {
         e.target.dataset.id
     );
 
-    const item = state.items.find(
-        item => item.id === id
-    );
+    const item =
+        state.items.find(
+            item => item.id === id
+        );
 
     if (!item) return;
 
-    item.selected = e.target.checked;
+    item.selected =
+        e.target.checked;
+
+    saveToLocalStorage();
 
     calculateSelectedTotal();
 }
 
 function calculateSelectedTotal() {
 
-    const total = state.items
-        .filter(item => item.selected)
+    const total =
+        state.items
 
-        .reduce((acc, item) => {
-            return acc + item.total;
-        }, 0);
+            .filter(
+                item => item.selected
+            )
+
+            .reduce(
+                (acc, item) => {
+                    return (
+                        acc +
+                        item.total
+                    );
+                },
+                0
+            );
 
     elements.totalSelecionado.textContent =
         total.toLocaleString(
@@ -343,9 +535,10 @@ function calculateSelectedTotal() {
 // =====================
 function openEdit(id) {
 
-    const item = state.items.find(
-        item => item.id === id
-    );
+    const item =
+        state.items.find(
+            item => item.id === id
+        );
 
     if (!item) return;
 

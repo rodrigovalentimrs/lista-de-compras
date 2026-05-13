@@ -580,8 +580,8 @@ function openModal() {
     if (!state.currentId) {
 
         elements.quantidade.value = 1;
-    git commit -m "refactor: simplifica valores padrão do formulário"}
-
+    }
+    
     elements.nome.focus();
 }
 

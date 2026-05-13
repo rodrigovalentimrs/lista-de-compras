@@ -1,0 +1,45 @@
+{
+  "items": [
+    {
+      "id": "GkHMlVy-XRs",
+      "nome": "arroz",
+      "quantidade": 2,
+      "valor": 5,
+      "total": 10,
+      "selected": true
+    },
+    {
+      "id": "THbs5ZjH7yw",
+      "nome": "feijão",
+      "quantidade": 2,
+      "valor": 2,
+      "total": 4,
+      "selected": true
+    },
+    {
+      "id": "Na6-nCNiEu8",
+      "nome": "macarrão",
+      "quantidade": 5,
+      "valor": 5,
+      "total": 25,
+      "selected": true
+    },
+    {
+      "id": "e46hMInpmWM",
+      "nome": "batata",
+      "quantidade": 3,
+      "valor": 2.45,
+      "total": 7.3500000000000005,
+      "selected": true
+    },
+    {
+      "id": "_nB38KKGhN4",
+      "nome": "biscoito",
+      "quantidade": 3,
+      "valor": 2.59,
+      "total": 7.77,
+      "selected": true
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

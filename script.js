@@ -46,7 +46,8 @@ async function fetchItems() {
         const data =
             await response.json();
 
-        state.items = data;
+        // MAIS RECENTES NO TOPO
+        state.items = data.reverse();
 
         saveToLocalStorage();
 
@@ -345,7 +346,7 @@ function getFormData() {
             elements.total.value
         ),
 
-        selected: false
+        selected: true
     };
 }
 
@@ -397,7 +398,8 @@ function validate({
 // =====================
 async function createItem(data) {
 
-    state.items.push(data);
+    // NOVOS ITENS NO TOPO
+    state.items.unshift(data);
 
     saveToLocalStorage();
 
@@ -568,29 +570,33 @@ function openModal() {
         "hidden"
     );
 
-    elements.nome.focus();
-}
+    if (!state.currentId) {
+        elements.quantidade.value = 1;
+    }
 
-function closeModal() {
+        elements.nome.focus();
+    }
 
-    elements.modal.classList.add(
-        "hidden"
-    );
+    function closeModal() {
 
-    state.currentId = null;
+        elements.modal.classList.add(
+            "hidden"
+        );
 
-    elements.form.reset();
+        state.currentId = null;
 
-    clearErrors();
-}
+        elements.form.reset();
 
-// =====================
-// RENDER
-// =====================
-function render() {
+        clearErrors();
+    }
 
-    elements.tbody.innerHTML =
-        state.items.map(item => `
+    // =====================
+    // RENDER
+    // =====================
+    function render() {
+
+        elements.tbody.innerHTML =
+            state.items.map(item => `
 
         <tr>
 
@@ -602,9 +608,9 @@ function render() {
                     data-id="${item.id}"
 
                     ${item.selected
-                        ? "checked"
-                        : ""
-                    }
+                    ? "checked"
+                    : ""
+                }
                 />
 
             </td>
@@ -667,5 +673,5 @@ function render() {
 
     `).join("");
 
-    calculateSelectedTotal();
-}
+        calculateSelectedTotal();
+    }

@@ -63,6 +63,22 @@
       "valor": 5,
       "total": 5,
       "selected": true
+    },
+    {
+      "id": "11IUiJtR_wA",
+      "nome": "correção",
+      "quantidade": 1,
+      "valor": 1,
+      "total": 1,
+      "selected": false
+    },
+    {
+      "id": "stKIFEx9bjk",
+      "nome": "correcade novo",
+      "quantidade": 1,
+      "valor": 5,
+      "total": 5,
+      "selected": true
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

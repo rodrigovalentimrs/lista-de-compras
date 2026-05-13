@@ -1,83 +1,51 @@
 {
   "items": [
     {
-      "id": "GkHMlVy-XRs",
+      "id": "5alBrjmxPlA",
       "nome": "arroz",
+      "quantidade": 1,
+      "valor": 4.55,
+      "total": 4.55,
+      "selected": true
+    },
+    {
+      "id": "4BOfYkQOunI",
+      "nome": "feijão",
       "quantidade": 2,
+      "valor": 5.95,
+      "total": 11.9,
+      "selected": true
+    },
+    {
+      "id": "9qHRq1Ynbu4",
+      "nome": "macarrão",
+      "quantidade": 1,
+      "valor": 3.55,
+      "total": 3.55,
+      "selected": true
+    },
+    {
+      "id": "pdP3qhMOXhw",
+      "nome": "suco",
+      "quantidade": 1,
       "valor": 5,
+      "total": 5,
+      "selected": true
+    },
+    {
+      "id": "w_BWIe_DG5I",
+      "nome": "pão",
+      "quantidade": 10,
+      "valor": 1,
       "total": 10,
       "selected": true
     },
     {
-      "id": "THbs5ZjH7yw",
-      "nome": "feijão",
-      "quantidade": 2,
-      "valor": 2,
-      "total": 4,
-      "selected": true
-    },
-    {
-      "id": "Na6-nCNiEu8",
-      "nome": "macarrão",
+      "id": "7Xi00n7AkVM",
+      "nome": "biscoito doce",
       "quantidade": 5,
-      "valor": 5,
-      "total": 25,
-      "selected": true
-    },
-    {
-      "id": "e46hMInpmWM",
-      "nome": "batata",
-      "quantidade": 3,
-      "valor": 2.45,
-      "total": 7.35,
-      "selected": true
-    },
-    {
-      "id": "_nB38KKGhN4",
-      "nome": "biscoito",
-      "quantidade": 3,
-      "valor": 2.59,
-      "total": 7.77,
-      "selected": true
-    },
-    {
-      "id": "KZCyDfL4fH0",
-      "nome": "suco",
-      "quantidade": 1,
-      "valor": 6,
-      "total": 6,
-      "selected": false
-    },
-    {
-      "id": "IKVQp5yU6gs",
-      "nome": "teste",
-      "quantidade": 2,
-      "valor": 2,
-      "total": 4,
-      "selected": false
-    },
-    {
-      "id": "B4aRdjx7N1Y",
-      "nome": "teste",
-      "quantidade": 1,
-      "valor": 5,
-      "total": 5,
-      "selected": true
-    },
-    {
-      "id": "11IUiJtR_wA",
-      "nome": "correção",
-      "quantidade": 1,
-      "valor": 1,
-      "total": 1,
-      "selected": false
-    },
-    {
-      "id": "stKIFEx9bjk",
-      "nome": "correcade novo",
-      "quantidade": 1,
-      "valor": 5,
-      "total": 5,
+      "valor": 2.55,
+      "total": 12.75,
       "selected": true
     }
   ],

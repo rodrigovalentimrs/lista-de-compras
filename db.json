@@ -29,7 +29,7 @@
       "nome": "batata",
       "quantidade": 3,
       "valor": 2.45,
-      "total": 7.3500000000000005,
+      "total": 7.35,
       "selected": true
     },
     {
@@ -38,6 +38,30 @@
       "quantidade": 3,
       "valor": 2.59,
       "total": 7.77,
+      "selected": true
+    },
+    {
+      "id": "KZCyDfL4fH0",
+      "nome": "suco",
+      "quantidade": 1,
+      "valor": 6,
+      "total": 6,
+      "selected": false
+    },
+    {
+      "id": "IKVQp5yU6gs",
+      "nome": "teste",
+      "quantidade": 2,
+      "valor": 2,
+      "total": 4,
+      "selected": false
+    },
+    {
+      "id": "B4aRdjx7N1Y",
+      "nome": "teste",
+      "quantidade": 1,
+      "valor": 5,
+      "total": 5,
       "selected": true
     }
   ],

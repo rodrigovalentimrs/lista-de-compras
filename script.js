@@ -196,7 +196,7 @@ function initTotalCalculation() {
         );
 
         elements.total.value =
-            q * v;
+            (q * v).toFixed(2);
     }
 
     elements.quantidade.addEventListener(
@@ -329,7 +329,7 @@ function getFormData() {
     return {
         id:
             state.currentId ||
-            Date.now(),
+            crypto.randomUUID(),
 
         nome:
             elements.nome.value.trim(),
@@ -339,11 +339,13 @@ function getFormData() {
         ),
 
         valor: Number(
-            elements.valor.value
+            Number(elements.valor.value)
+                .toFixed(2)
         ),
 
         total: Number(
-            elements.total.value
+            Number(elements.total.value)
+                .toFixed(2)
         ),
 
         selected: true
@@ -446,16 +448,15 @@ async function deleteItem(id) {
 // =====================
 // TABLE EVENTS
 // =====================
-function handleTableClick(e) {
+async function handleTableClick(e) {
 
     const btn =
         e.target.closest("button");
 
     if (!btn) return;
 
-    const id = Number(
-        btn.dataset.id
-    );
+    const id =
+        btn.dataset.id;
 
     const action =
         btn.dataset.action;
@@ -467,7 +468,7 @@ function handleTableClick(e) {
 
     if (action === "delete") {
 
-        deleteItem(id);
+        await deleteItem(id);
 
         render();
     }
@@ -484,9 +485,8 @@ function handleCheckboxChange(e) {
         )
     ) return;
 
-    const id = Number(
-        e.target.dataset.id
-    );
+    const id =
+        e.target.dataset.id;
 
     const item =
         state.items.find(
@@ -503,9 +503,13 @@ function handleCheckboxChange(e) {
     calculateSelectedTotal();
 }
 
+// =====================
+// TOTAL SELECIONADO
+// =====================
 function calculateSelectedTotal() {
 
-    const total =
+    const total = Number(
+
         state.items
 
             .filter(
@@ -520,7 +524,10 @@ function calculateSelectedTotal() {
                     );
                 },
                 0
-            );
+            )
+
+            .toFixed(2)
+    );
 
     elements.totalSelecionado.textContent =
         total.toLocaleString(
@@ -571,32 +578,39 @@ function openModal() {
     );
 
     if (!state.currentId) {
+
         elements.quantidade.value = 1;
+
+        elements.valor.value = 0;
+
+        elements.total.value = 0;
     }
 
-        elements.nome.focus();
-    }
+    elements.nome.focus();
+}
 
-    function closeModal() {
+function closeModal() {
 
-        elements.modal.classList.add(
-            "hidden"
-        );
+    elements.modal.classList.add(
+        "hidden"
+    );
 
-        state.currentId = null;
+    state.currentId = null;
 
-        elements.form.reset();
+    elements.form.reset();
 
-        clearErrors();
-    }
+    elements.total.value = "";
 
-    // =====================
-    // RENDER
-    // =====================
-    function render() {
+    clearErrors();
+}
 
-        elements.tbody.innerHTML =
-            state.items.map(item => `
+// =====================
+// RENDER
+// =====================
+function render() {
+
+    elements.tbody.innerHTML =
+        state.items.map(item => `
 
         <tr>
 
@@ -608,9 +622,9 @@ function openModal() {
                     data-id="${item.id}"
 
                     ${item.selected
-                    ? "checked"
-                    : ""
-                }
+                        ? "checked"
+                        : ""
+                    }
                 />
 
             </td>
@@ -673,5 +687,5 @@ function openModal() {
 
     `).join("");
 
-        calculateSelectedTotal();
-    }
+    calculateSelectedTotal();
+}
